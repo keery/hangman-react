@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import Keyboard from './Keyboard';
+
 
 class App extends Component {
+  state = {
+    usedLetters: ['b'],
+    guessWord : 'maison'
+  }
+
+  computeDisplay(phrase, usedLetters) {
+    return phrase.replace(/\w/g,
+      (letter) => (usedLetters.has(letter) ? letter : '_')
+    )
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Keyboard usedLetters={this.state.usedLetters} />
     );
   }
 }
