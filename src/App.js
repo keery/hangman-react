@@ -2,23 +2,31 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import Keyboard from './Keyboard';
+import Counter from './Counter';
 
 
 class App extends Component {
   state = {
-    usedLetters: ['b'],
-    guessWord : 'maison'
+    usedLetters: ['a'],
+    guessWord : 'maison',
+    countTry : 0
   }
 
   computeDisplay(phrase, usedLetters) {
     return phrase.replace(/\w/g,
-      (letter) => (usedLetters.has(letter) ? letter : '_')
+      (letter) => (usedLetters.includes(letter) ? letter : '_')
     )
   }
 
   render() {
     return (
-      <Keyboard usedLetters={this.state.usedLetters} />
+      <div>
+        <Counter tries={this.state.countTry} />
+        <div className="guess_word">
+          {this.computeDisplay(this.state.guessWord, this.state.usedLetters)}
+        </div>
+        <Keyboard usedLetters={this.state.usedLetters} />
+      </div>
     );
   }
 }
