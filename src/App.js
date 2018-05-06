@@ -3,8 +3,9 @@ import './App.css';
 import Keyboard from './Keyboard';
 import Counter from './Counter';
 
-const DEFAULT_STATE = {usedLetters: [], guessWord : 'maison', countTry : 0 }
-
+const DEFAULT_STATE = {usedLetters: [], guessWord : '', countTry : 0 }
+// const words = ['ab'];
+const words = ['maison', 'table', 'ordinateur'];
 class App extends Component {
   state = { ...DEFAULT_STATE }
 
@@ -17,6 +18,14 @@ class App extends Component {
     return phrase.replace(/\w/g,
       (letter) => (usedLetters.includes(letter) ? letter : '_')
     )
+  }
+
+  //Fonction qui sera appelé après le constructeur mais est idéal pour récuperer des informations exterieurs
+  componentWillMount() {
+    this.getRandomWord();
+  }
+  getRandomWord() {
+    this.setState({ guessWord: words[Math.floor(Math.random()*words.length)] });
   }
 
   reset() {
@@ -34,15 +43,26 @@ class App extends Component {
     if(next === 5) this.reset();
   }
 
+  restartGame() {
+    this.reset()
+    this.getRandomWord()
+  }
+
   render() {
+    const hashWord = this.computeDisplay(this.state.guessWord, this.state.usedLetters);
+    
     return (
-      <div>
-        <Counter tries={this.state.countTry} />
-        <div className="guess_word">
-          {this.computeDisplay(this.state.guessWord, this.state.usedLetters)}
+        hashWord !== this.state.guessWord ?
+        <div>
+          <Counter tries={this.state.countTry} />
+          <div className="guess_word">
+            {this.computeDisplay(this.state.guessWord, this.state.usedLetters)}
+          </div>
+          <Keyboard usedLetters={this.state.usedLetters} onClick={this.addLetterUsed}/>
         </div>
-        <Keyboard usedLetters={this.state.usedLetters} onClick={this.addLetterUsed}/>
-      </div>
+        :
+        <button onClick={() => this.restartGame()}>Nouvelle partie</button>
+
     );
   }
 }
