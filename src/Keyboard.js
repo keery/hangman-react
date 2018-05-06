@@ -5,10 +5,17 @@ import './Keyboard.css'
 const keys = ['a','z','e','r','t','y','u','i','o','p','q','s','d','f','g','h','j','k','l','m','w','x','c','v','b','n'];
 
 
-const Keyboard = ({usedLetters}) => (
+const Keyboard = ({usedLetters, onClick}) => (
   <div className="row">
     {keys.map((key) => (      
-      <button type="button" className={(usedLetters.includes(key) ? 'used' : '')} key={key}>{key.toUpperCase()}</button>
+      <button 
+        type="button" 
+        className={(usedLetters.includes(key) ? 'used' : '')} 
+        key={key} 
+        onClick={() => onClick(key)}
+      >
+          {key.toUpperCase()}
+      </button>
     ))}
   </div>
 )
